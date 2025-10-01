@@ -1,6 +1,6 @@
 # cmp: Conditional Mixed Process Models
 
-[![R-CMD-check](https://github.com/yourname/cmp/workflows/R-CMD-check/badge.svg)](https://github.com/yourname/cmp/actions)
+[![R-CMD-check](https://github.com/ashgreat/cmp/workflows/R-CMD-check/badge.svg)](https://github.com/ashgreat/cmp/actions)
 [![CRAN status](https://www.r-pkg.org/badges/version/cmp)](https://CRAN.R-project.org/package=cmp)
 
 The `cmp` package provides R implementation of Conditional Mixed Process (CMP) models using maximum likelihood estimation. CMP models allow for systems of equations with different model types including continuous, binary and ordered probit, multinomial probit, and censored regression models.
@@ -110,8 +110,8 @@ This R implementation provides:
 ## Documentation
 
 - [Introduction vignette](vignettes/cmp-introduction.Rmd)
-- [Function reference](R/)
-- [Examples and tutorials](vignettes/)
+- **Function reference:** After installing, run `help(package = "cmp")` for a full index of exported functions.
+- **Examples & tutorials:** Review the vignette `vignettes/cmp-introduction.Rmd` or run `vignette("cmp-introduction", package = "cmp")`.
 
 ## Citation
 
