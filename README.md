@@ -118,8 +118,8 @@ This R implementation provides:
 If you use this package in your research, please cite:
 
 ```
-Your Name (2025). cmp: Conditional Mixed Process Models.
-R package version 1.0.0. https://github.com/yourname/cmp
+Malshe, Ashwin (2025). cmp: Conditional Mixed Process Models.
+R package version 1.0.0. https://github.com/ashgreat/cmp
 ```
 
 Please also cite the original Stata implementation:
