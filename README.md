@@ -110,8 +110,8 @@ This R implementation provides:
 ## Documentation
 
 - [Introduction vignette](vignettes/cmp-introduction.Rmd)
-- [Function documentation](man/)
-- [Examples and tutorials](examples/)
+- [Function reference](R/)
+- [Examples and tutorials](vignettes/)
 
 ## Citation
 
@@ -139,5 +139,5 @@ GPL (>= 3)
 
 ## Support
 
-- [GitHub Issues](https://github.com/yourname/cmp/issues)
-- [Package Documentation](https://yourname.github.io/cmp/)
+- [GitHub Issues](https://github.com/ashgreat/cmp/issues)
+- [Package Documentation](https://ashgreat.github.io/cmp/)
