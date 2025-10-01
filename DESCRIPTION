@@ -1,0 +1,35 @@
+Package: cmp
+Type: Package
+Title: Conditional Mixed Process Models
+Version: 1.0.0
+Date: 2025-10-01
+Author: Your Name <your.email@example.com>
+Maintainer: Your Name <your.email@example.com>
+Authors@R: c(
+    person("Your", "Name", email = "your.email@example.com", role = c("aut", "cre")),
+    person("David", "Roodman", role = "aut", comment = "Original Stata implementation"))
+Description: Estimation of conditional mixed process (CMP) models using maximum
+    likelihood. CMP models allow for systems of equations with different model
+    types including continuous (tobit-style), binary and ordered probit,
+    and interval regression models. This is an R implementation based on
+    David Roodman's Stata CMP package.
+License: GPL (>= 3)
+Depends: R (>= 4.0.0)
+Imports:
+    stats,
+    methods,
+    Matrix,
+    mvtnorm,
+    numDeriv,
+    maxLik,
+    Formula,
+    MASS
+Suggests:
+    testthat (>= 3.0.0),
+    knitr,
+    rmarkdown,
+    ggplot2
+LazyData: true
+Encoding: UTF-8
+RoxygenNote: 7.2.3
+VignetteBuilder: knitr

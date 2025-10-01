@@ -1,0 +1,219 @@
+---
+title: "Introduction to Conditional Mixed Process (CMP) Models"
+author: "CMP Package Authors"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Introduction to Conditional Mixed Process (CMP) Models}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(cmp)
+```
+
+## Introduction
+
+The `cmp` package provides R implementation of Conditional Mixed Process (CMP) models, based on David Roodman's Stata CMP package. CMP models allow for the simultaneous estimation of systems of equations where each equation can follow different model types including:
+
+- **Continuous models**: Normal regression with potential censoring
+- **Probit models**: Binary choice models
+- **Ordered probit models**: Ordinal choice models
+- **Multinomial probit models**: Multiple choice models
+- **Tobit models**: Left or right censored continuous models
+- **Interval regression**: Models for interval-censored data
+
+The key advantage of CMP models is that they allow for correlation between the error terms across equations, capturing unobserved heterogeneity that affects multiple outcomes simultaneously.
+
+## Basic Usage
+
+### Single Equation Models
+
+For single equation models, CMP provides a unified interface:
+
+```{r single-eq, eval=FALSE}
+# Probit model
+data(mtcars)
+model1 <- cmp(
+  formula = list(vs ~ mpg + hp),
+  data = mtcars,
+  indicators = "probit"
+)
+summary(model1)
+```
+
+```{r continuous, eval=FALSE}
+# Continuous model (equivalent to linear regression)
+model2 <- cmp(
+  formula = list(mpg ~ hp + wt),
+  data = mtcars,
+  indicators = "continuous"
+)
+summary(model2)
+```
+
+### Multiple Equation Models
+
+The real power of CMP comes from modeling multiple equations simultaneously:
+
+```{r bivariate, eval=FALSE}
+# Bivariate probit model
+# Modeling whether a car has a V-engine (vs) and automatic transmission (am)
+bivariate_model <- cmp(
+  formula = list(
+    vs ~ mpg + hp,
+    am ~ mpg + wt
+  ),
+  data = mtcars,
+  indicators = c("probit", "probit")
+)
+
+summary(bivariate_model)
+```
+
+### Mixed Model Types
+
+You can combine different model types in a single system:
+
+```{r mixed, eval=FALSE}
+# Mixed system: continuous outcome and binary choice
+mixed_model <- cmp(
+  formula = list(
+    mpg ~ hp + wt,      # Continuous: fuel efficiency
+    vs ~ mpg + hp       # Binary: V-engine type
+  ),
+  data = mtcars,
+  indicators = c("continuous", "probit")
+)
+
+summary(mixed_model)
+```
+
+## Model Types and Indicators
+
+The `indicators` parameter specifies the model type for each equation:
+
+- `"continuous"`: Normal linear regression
+- `"probit"`: Binary probit model
+- `"oprobit"`: Ordered probit model
+- `"mprobit"`: Multinomial probit model
+- `"left"`: Left-censored (Tobit) model
+- `"right"`: Right-censored model
+- `"interval"`: Interval regression
+- `"frac"`: Fractional probit model
+
+## Predictions
+
+The package provides flexible prediction methods:
+
+```{r predictions, eval=FALSE}
+# Link scale predictions (linear predictors)
+pred_link <- predict(bivariate_model, type = "link")
+
+# Response scale predictions
+pred_response <- predict(bivariate_model, type = "response")
+
+# Probabilities (for discrete models)
+pred_prob <- predict(bivariate_model, type = "prob")
+
+# Predictions for new data
+new_data <- data.frame(mpg = 20, hp = 150, wt = 3.0)
+pred_new <- predict(bivariate_model, newdata = new_data, type = "response")
+```
+
+## Model Diagnostics
+
+Standard diagnostic methods are available:
+
+```{r diagnostics, eval=FALSE}
+# Coefficients
+coef(bivariate_model)
+
+# Variance-covariance matrix
+vcov(bivariate_model)
+
+# Log-likelihood
+logLik(bivariate_model)
+
+# Fitted values and residuals
+fitted(bivariate_model)
+residuals(bivariate_model)
+```
+
+## Advanced Features
+
+### Starting Values
+
+You can provide custom starting values for optimization:
+
+```{r starting-values, eval=FALSE}
+# Custom starting values
+start_vals <- rep(0, 10)  # Adjust length based on model
+model_custom <- cmp(
+  formula = list(vs ~ mpg + hp, am ~ mpg + wt),
+  data = mtcars,
+  indicators = c("probit", "probit"),
+  start = start_vals
+)
+```
+
+### Optimization Control
+
+Control optimization parameters:
+
+```{r control, eval=FALSE}
+model_controlled <- cmp(
+  formula = list(vs ~ mpg + hp),
+  data = mtcars,
+  indicators = "probit",
+  control = list(
+    maxit = 5000,
+    reltol = 1e-10
+  )
+)
+```
+
+## Comparison with Stata CMP
+
+This R implementation aims to provide results comparable to the Stata CMP package. Key features include:
+
+- Maximum likelihood estimation using BFGS optimization
+- Support for multiple equation types in a single system
+- Proper handling of correlation between equations
+- Comprehensive prediction methods
+- Standard model diagnostic tools
+
+## Limitations and Future Development
+
+Current limitations include:
+
+- Limited support for some advanced model types (e.g., complex ordered/multinomial probits)
+- No random effects implementation yet
+- GHK simulation methods not yet implemented for high-dimensional integration
+
+Future versions will expand support for:
+
+- Random effects and multilevel models
+- More sophisticated integration methods
+- Additional model types
+- Enhanced diagnostic tools
+
+## References
+
+Roodman, D. (2011). Fitting fully observed recursive mixed-process models with cmp. *The Stata Journal*, 11(2), 159-206.
+
+## Getting Help
+
+For questions about the package, please:
+
+1. Check the function documentation: `?cmp`
+2. Review this vignette and examples
+3. Visit the package GitHub repository for issues and development updates
